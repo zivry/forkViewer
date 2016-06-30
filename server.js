@@ -40,11 +40,43 @@ app.get("/", function (request, response) {
 app.get("/dreams", function (request, response) {
   response.send(dreams);
 });
-app.get("/forks/:owner/:repo", function (request, response) {
-  
-    request('https://api.github.com/repos/' + owner +'/' +repo +'/forks', function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log(body) // Show the HTML for the Google homepage. 
+app.get("/forks/:owner/:repo", function (req, res) {
+  // console.log(req.params.owner, req.params.repo) // Show the HTML for the Google homepage. 
+  var options = {
+    url : 'https://api.github.com/repos/' + req.params.owner +'/' +req.params.repo +'/forks?sort=stargazers',
+    headers : {
+      'User-Agent': 'request'
+    }
+  }
+    request(options, function (error, response, body) {
+      if (error) {
+        res.status(404).end();
+      }
+      else {
+        if (response.statusCode == 200) {
+          var obj = JSON.parse(body);
+          var data = [];
+          console.dir(response.headers);
+          var result = {"current":  response.headers.link,"data": data};
+          for (var i = 0; i < obj.length; i++) {
+            fork = obj[i];
+            data.push({
+              "login" : fork.owner.login, 
+              "url": fork.forks_url , 
+              "forks": fork.forks,
+              "watchers": fork.watchers,
+              "forks_count": fork.forks_count,
+              "stars": fork.stargazers_count,
+              "updated_at": fork.updated_at
+            });
+          }
+          // console.dir(result)
+          res.status(200).json(result).end();
+        }  
+        else 
+        {
+          res.status(response.statusCode).send(body);
+        }
       }
     });
 });

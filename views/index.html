@@ -19,23 +19,22 @@
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
-    <header>
-      <h1>
-        A Dream of the Future
-      </h1>
-    </header>
-
     <main>
-      <p class="bold">Oh hi,</p>
-      <p>Tell me your hopes and dreams:</p>
-      <form>
-        <input type="text" maxlength="100" placeholder="Dreams!">
-        <button type="submit">Submit</button>
-      </form>
-      <section class="dreams">
-        <ul id="dreams">
-        </ul>
-      </section>
+      <p class="bold">Please write user and repository</p>
+      <input type="text" name="getForks" value="user/repo">
+      <input type="submit" value="Go!">
+     <table id="myTable">
+       <tr>
+    <th>username</th>
+    <th>url</th> 
+    <th>watchers</th>
+    <th>stars</th>
+    <th>forks_count</th>
+    <th>forks</th>
+    <th>updatedAt</th>
+  </tr>
+  </table>
+     
     </main>
 
     <footer>
